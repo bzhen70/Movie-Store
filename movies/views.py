@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Movie, Review
+from .models import Movie, Review, Like
 from django.contrib.auth.decorators import login_required
 def index(request):
     search_term = request.GET.get('search')
@@ -16,10 +16,14 @@ def index(request):
 def show(request, id):
     movie = Movie.objects.get(id=id)
     reviews = Review.objects.filter(movie=movie)
+    liked_reviews = list(
+    Like.objects.filter(user=request.user).values_list('review', flat=True)
+)
     template_data = {}
     template_data['title'] = movie.name
     template_data['movie'] = movie
     template_data['reviews'] = reviews
+    template_data['liked_reviews'] = liked_reviews
     return render(request, 'movies/show.html',
                   {'template_data': template_data})
 
@@ -60,3 +64,26 @@ def delete_review(request, id, review_id):
         user=request.user)
     review.delete()
     return redirect('movies.show', id=id)
+
+@login_required
+def like_review(request, id, review_id):
+    try:
+        like = Like.objects.get(user=request.user, review =Review.objects.get(id=review_id))
+    except Like.DoesNotExist:
+        like = None
+    if like == None:
+        newLike = Like()
+        newLike.review = Review.objects.get(id=review_id)
+        newLike.user = request.user
+        newLike.save()
+        newLike.review.likeCount = Like.objects.filter(review = Review.objects.get(id=review_id)).count()
+        newLike.review.save()
+        return redirect('movies.show', id=id)   
+    else:
+        review = like.review
+        like.delete()
+        review.likeCount = Like.objects.filter(review = Review.objects.get(id=review_id)).count()
+        review.save()
+        return redirect('movies.show', id=id)
+
+    

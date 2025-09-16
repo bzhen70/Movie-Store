@@ -45,10 +45,9 @@
               "{% url 'movies.index' %}">Movies</a>
             <div class="vr bg-white mx-2 d-none
               d-lg-block"></div>
-            <a class="nav-link"
-              href="{% url 'cart.index' %}">Cart</a>
              {% if user.is_authenticated %}
-
+              <a class="nav-link"
+              href="{% url 'cart.index' %}">Cart</a>
               <a class="nav-link"
               href="{% url 'accounts.orders' %}">Orders
               </a>
@@ -96,19 +95,22 @@
             <p><a class="nav-link"
                 href="{% url 'home.about' %}">About</a>
             </p>
+            <p><a class="nav-link"
+                href="{% url 'movie.index' }">Movies</a>
+            </p>
           </div>
           <div class="col-md-3 col-lg-3 col-xl-3 mx-auto
                mb-4">
             <b>CONTACT</b>
             <hr />
             <p><i class="fas fa-home me-2"></i>
-              150-2345 Tokyo-to, Japan
+              120 North Avenue NW, Atlanta, GA 30318
             </p>
             <p><i class="fas fa-envelope me-2"></i>
-              info@moviesstore.com
+              bzhen7@gatech.edu
             </p>
             <p><i class="fas fa-phone me-2"></i>
-              +81 03-3333-3333
+              +1 678-979-2332
             </p>
           </div>
         </div>

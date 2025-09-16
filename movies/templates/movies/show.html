@@ -67,14 +67,26 @@
             <h6 class="card-subtitle mb-2 text-muted">
               {{ review.date }}
             </h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Likes: {{ review.likeCount }}
+            </h6>
             <p class="card-text">{{ review.comment }}</p>
-            {% if user.is_authenticated and user == review.user %}
+            {% if template_data.movie.name %}
             <a class="btn btn-primary"
               href="{% url 'movies.edit_review' id=template_data.movie.id review_id=review.id %}">Edit
             </a>
             <a class="btn btn-danger"
               href="{% url 'movies.delete_review' id=template_data.movie.id review_id=review.id %}">Delete
             </a>
+            {% endif %}
+            {% if review.id in template_data.liked_reviews %}
+                <a class="btn btn-primary"
+                    href="{% url 'movies.like_review' id=template_data.movie.id review_id=review.id %}"> Unlike
+                </a>
+              {% else %}
+                <a class="btn btn-primary"
+                      href="{% url 'movies.like_review' id=template_data.movie.id review_id=review.id %}"> Like
+                </a>
             {% endif %}
           </li>
           {% endfor %}
